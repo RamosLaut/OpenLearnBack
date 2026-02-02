@@ -28,5 +28,6 @@ public class Lesson {
 enum ContentType {
     VIDEO,
     PDF,
-    TEXT
+    TEXT,
+    QUIZ
 }
