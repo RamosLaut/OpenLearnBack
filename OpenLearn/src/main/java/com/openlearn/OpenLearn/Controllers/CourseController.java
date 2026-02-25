@@ -1,10 +1,12 @@
 package com.openlearn.OpenLearn.Controllers;
 
 import com.openlearn.OpenLearn.Model.Entities.Course;
+import com.openlearn.OpenLearn.Repositories.CourseRepository;
 import com.openlearn.OpenLearn.Services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +19,8 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private CourseRepository courseRepository;
 
     public record CourseRequest(
             String title,
@@ -68,6 +72,18 @@ public class CourseController {
     public ResponseEntity<List<Course>> getInstructorCourses(@PathVariable Long instructorId) {
         List<Course> courses = courseService.getAllCoursesByInstructor(instructorId);
         return ResponseEntity.ok(courses);
+    }
+
+    @Transactional
+    public Course updateCourse(Long id, Course updatedData) {
+        Course existingCourse = courseRepository.findById(id).orElseThrow(()-> new RuntimeException("Course with id: " + id + " not found"));
+
+        existingCourse.setTitle(updatedData.getTitle());
+        existingCourse.setDescription(updatedData.getDescription());
+        existingCourse.setCategory(updatedData.getCategory());
+        existingCourse.setImageUrl(updatedData.getImageUrl());
+
+        return courseRepository.save(existingCourse);
     }
 
     @DeleteMapping("/delete/{id}")
