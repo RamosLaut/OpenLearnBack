@@ -95,4 +95,23 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateCourse(@PathVariable Long id, @RequestBody CourseRequest request) {
+        try {
+            Course updatedData = new Course();
+            updatedData.setTitle(request.title());
+            updatedData.setDescription(request.description());
+            updatedData.setCategory(request.category());
+            updatedData.setImageUrl(request.imageUrl());
+
+            Course savedCourse = courseService.updateCourse(id, updatedData);
+
+            return ResponseEntity.ok(savedCourse);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Critical error: " + e.getMessage());
+        }
+    }
 }

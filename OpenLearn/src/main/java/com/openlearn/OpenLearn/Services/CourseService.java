@@ -50,4 +50,17 @@ public class CourseService {
         }
 
     }
+
+    @Transactional
+    public Course updateCourse(Long id, Course updateData){
+        Course existingCourse = courseRepository.findById(id)
+                .orElseThrow(()->new RuntimeException("course not found wiht ID:" + id));
+
+        existingCourse.setTitle(updateData.getTitle());
+        existingCourse.setDescription(updateData.getDescription());
+        existingCourse.setCategory(updateData.getCategory());
+        existingCourse.setImageUrl(updateData.getImageUrl());
+
+        return courseRepository.save(existingCourse);
+    }
 }
