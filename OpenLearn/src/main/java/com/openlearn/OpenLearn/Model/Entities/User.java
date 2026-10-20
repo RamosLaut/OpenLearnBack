@@ -1,5 +1,6 @@
 package com.openlearn.OpenLearn.Model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
     private List<Course> CoursesCreated;
 }

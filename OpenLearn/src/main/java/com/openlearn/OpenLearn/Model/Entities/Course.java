@@ -1,5 +1,7 @@
 package com.openlearn.OpenLearn.Model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.openlearn.OpenLearn.Model.Entities.Module;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,6 +33,7 @@ public class Course {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id")
+    @JsonIgnoreProperties({"coursesCreated", "password"})
     private User instructor;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)

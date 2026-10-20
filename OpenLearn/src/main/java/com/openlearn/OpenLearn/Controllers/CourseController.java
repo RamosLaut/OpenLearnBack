@@ -26,16 +26,17 @@ public class CourseController {
             String imageUrl
     ){}
 
+    @PostMapping("/create")
     public ResponseEntity<?> createCourse(@RequestBody CourseRequest request) {
         try {
             Course newCourse = new Course();
-            newCourse.setTitle(request.title);
-            newCourse.setDescription(request.description);
-            newCourse.setCategory(request.category);
-            newCourse.setImageUrl(request.imageUrl);
+            newCourse.setTitle(request.title());
+            newCourse.setDescription(request.description());
+            newCourse.setCategory(request.category());
+            newCourse.setImageUrl(request.imageUrl());
 
-            Course savedCourse = courseService.createCourse(newCourse, request.instructorId);
-            return  ResponseEntity.status(HttpStatus.CREATED).body(savedCourse);
+            Course savedCourse = courseService.createCourse(newCourse, request.instructorId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedCourse);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body("Error creating course: " + e.getMessage());
         } catch (Exception e) {
